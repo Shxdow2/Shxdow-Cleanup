@@ -57,4 +57,4 @@ The script is built as a modular system engine rather than a simple batch file:
 * **License:** This project is licensed under the **MIT License**.
 
 ---
-*"A cleaning tool should be as clean as the system it leaves behind."* **Developed by Shxdow**
+**Developed by Shxdow**
