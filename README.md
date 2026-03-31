@@ -1,26 +1,60 @@
 # 🛠️ Shxdow Cleanup v3.1
+**Automated Windows Optimization & Deep Cleaning Engine**
 
-![OS](https://img.shields.io/badge/OS-Windows%2010%20%2F%2011-0078D6?style=flat-square&logo=windows)
-![License](https://img.shields.io/badge/License-MIT-success?style=flat-square)
-![Language](https://img.shields.io/badge/Shell-PowerShell-5391FE?style=flat-square&logo=powershell)
-
-**Shxdow Cleanup** is an automated optimization engine designed for Windows deep cleaning and system performance boosting.
+[Download Latest Release](#-installation) | [View Source Code](./Shxdow-Cleanup.ps1)
 
 ---
 
-## 🚀 Key Features
-* **Deep Clean:** Removal of temporary files, Prefetch, Crypto, and RSA.
-* **Gaming Boost:** Shader clearing (DirectX/Nvidia) and Steam/Epic optimization.
-* **App Cleanup:** Specific cleaning for Discord, Spotify, and web browsers.
-* **System Maintenance:** DNS Flushing, Disk TRIM, and system log cleanup.
-
-## 🛠️ How to Use
-1. Download the `Shxdow-Cleanup.ps1` file.
-2. Right-click the file.
-3. Select **"Run with PowerShell"** (Run as Administrator recommended).
-
-## 🎨 Interface Preview
-![Interface](https://raw.githubusercontent.com/Shxdow2/Shxdow2/main/image_7.png)
+## 📖 Table of Contents
+1. [Features at a Glance](#-features-at-a-glance)
+2. [System Requirements](#-system-requirements)
+3. [Installation & Execution](#-installation)
+4. [Modular Architecture](#-modular-architecture)
+5. [Security & Open Source](#-security--open-source)
 
 ---
-*Developed by Shxdow. MIT Licensed.*
+
+## ✨ Features at a Glance
+* **Autonomous Optimization Engine:** A multi-stage pipeline that cleans, decides, and executes system tweaks.
+* **Deep Disk Cleaning:** Targets Windows, Prefetch, Crypto, and RSA system-level files.
+* **Gaming Performance:** Instant shader clearing for DirectX/Nvidia and store-specific optimizations (Steam/Epic).
+* **Software Discovery:** Automatically detects and cleans Discord, Spotify, and major web browsers.
+* **Core Tweaks:** DNS Flushing, RAM optimization, and Registry core performance tweaks.
+
+---
+
+## 💻 System Requirements
+* **OS:** Windows 10 or Windows 11 (22H2+ recommended).
+* **Architecture:** x64 / ARM64.
+* **Privileges:** Administrator rights required for kernel-level cleaning.
+
+---
+
+## 🚀 Installation
+To ensure the script runs without being blocked by Windows security:
+
+1. **Download** the `Shxdow-Cleanup.ps1` file.
+2. **Unblock the file:** Right-click -> Properties -> Check **Unblock** -> OK.
+3. **Run as Admin:** Right-click the file and select **Run with PowerShell**.
+
+> **Note:** If the script doesn't start, run this command in an admin PowerShell terminal:
+> `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+---
+
+## 🏗️ Modular Architecture
+The script is built as a modular system engine rather than a simple batch file:
+* **Dashboard:** Real-time CUI (Console User Interface) feedback.
+* **Cleaning Module:** Handles file I/O and recursive deletion.
+* **Optimizer Module:** Targets DNS, RAM, and Registry keys.
+* **Hardware Module:** Surface Pro & Intel specific optimizations.
+
+---
+
+## 🛡️ Security & Open Source
+* **Transparency:** 100% Open Source. No hidden telemetry.
+* **Safety Net:** Append-only logic—never deletes essential OS files.
+* **License:** This project is licensed under the **MIT License**.
+
+---
+*"A cleaning tool should be as clean as the system it leaves behind."* **Developed by Shxdow**
