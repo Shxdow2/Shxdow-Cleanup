@@ -4,6 +4,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/Shxdow2/Shxdow-Cleanup?style=for-the-badge&color=5391FE)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Shxdow2/Shxdow-Cleanup?style=for-the-badge&color=A2D2FF)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 
 ---
 
@@ -24,10 +25,10 @@
 
 ## 📖 Table of Contents
 * [🚀 Getting Started](#-getting-started)
-* [🛠️ Core Modules](#️-core-modules)
-* [📋 System Requirements](#-system-requirements)
+* [🏗️ Core Modules](#️-core-modules)
+* [⚙️ Runtimes & Dependencies](#️-runtimes--dependencies)
 * [🛡️ Security & Privacy](#-security--privacy)
-* [🤝 Contributing](#-contributing)
+* [🔗 Connect with me](#-connect-with-me)
 
 ---
 
@@ -49,6 +50,15 @@ The engine is divided into specialized modules for maximum efficiency:
 
 ---
 
+## ⚙️ Runtimes & Dependencies
+To ensure all optimization modules work at 100%, the following runtimes are utilized:
+
+* **[PowerShell 5.1+](https://aka.ms/PSWindows)**: Native Windows engine used for deep system hooks.
+* **[.NET Framework 4.8+](https://dotnet.microsoft.com/download/dotnet-framework)**: The backbone of the cleanup logic (pre-installed on Win 10/11).
+* **[Windows Management Instrumentation (WMI)](https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page)**: Used for real-time RAM and hardware cache flushing.
+
+---
+
 ## 🛡️ Security & Privacy
 * **Zero Telemetry:** No data ever leaves your machine.
 * **Read-Only Logic:** The script never touches essential Windows Kernel files.
@@ -58,3 +68,4 @@ The engine is divided into specialized modules for maximum efficiency:
 
 ## 🔗 Connect with me
 [![GitHub](https://img.shields.io/badge/GitHub-Shxdow2-181717?style=flat-square&logo=github)](https://github.com/Shxdow2)
+*"Making Windows usable again, one script at a time."*
