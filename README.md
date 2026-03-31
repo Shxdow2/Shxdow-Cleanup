@@ -68,4 +68,3 @@ To ensure all optimization modules work at 100%, the following runtimes are util
 
 ## 🔗 Connect with me
 [![GitHub](https://img.shields.io/badge/GitHub-Shxdow2-181717?style=flat-square&logo=github)](https://github.com/Shxdow2)
-*"Making Windows usable again, one script at a time."*
