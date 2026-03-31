@@ -20,7 +20,7 @@
 3. Select **"Run with PowerShell"** (Run as Administrator recommended).
 
 ## 🎨 Interface Preview
-![Interface](https://raw.githubusercontent.com/Shxdow2/Shxdow2/main/image_4.png)
+![Interface](https://raw.githubusercontent.com/Shxdow2/Shxdow2/main/image_7.png)
 
 ---
 *Developed by Shxdow. MIT Licensed.*
