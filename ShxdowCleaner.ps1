@@ -1,6 +1,6 @@
 ﻿#Requires -RunAsAdministrator
 <#
-  SHXDOW CLEANUP v3.1
+  SHXDOW CLEANUP v3.2
   by Shxdow
   Performance & Deep Cleanup
   Requires: PowerShell 5.1+ | Run As Administrator
@@ -246,7 +246,7 @@ while ($true) {
         Write-Host "`n  Enregistrer le rapport sur le Bureau ? [O/N] " -NoNewline -ForegroundColor Cyan
         if ((Read-Host) -match "^[Oo]$") {
             $reportPath = "$env:USERPROFILE\Desktop\ShxdowCleaner_Report.txt"
-            "SHXDOW CLEANUP v3.1`nLibéré: $(Fmt $realFreed)`nTemps: $($elapsed.ToString('mm\:ss'))" | Out-File $reportPath -Encoding UTF8
+            "SHXDOW CLEANUP v3.2`nLibéré: $(Fmt $realFreed)`nTemps: $($elapsed.ToString('mm\:ss'))" | Out-File $reportPath -Encoding UTF8
             Write-Host "  [OK] Rapport sauvegardé." -ForegroundColor Green
         }
 
