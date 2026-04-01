@@ -1,4 +1,4 @@
-# 🛠️ Shxdow Cleanup v3.1
+# 🛠️ Shxdow Cleanup v3.2
 > **Advanced Windows Optimization Engine & System Hardening Tool**
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/Shxdow2/Shxdow-Cleanup?style=for-the-badge&color=5391FE)
