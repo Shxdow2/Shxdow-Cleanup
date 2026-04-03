@@ -130,7 +130,6 @@ Set `"language"` to `"EN"` for English. Set any module to `false` to skip it ent
 
 This tool modifies **system services, registry keys, and hardware settings**.  
 A registry backup is automatically exported to `C:\RegistryBackups\` before any optimization is applied.  
-Use at your own risk. Always review the script before running it.
 
 ---
 
