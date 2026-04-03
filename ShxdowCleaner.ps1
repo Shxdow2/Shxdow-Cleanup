@@ -1,9 +1,8 @@
-﻿#Requires -RunAsAdministrator
+#Requires -RunAsAdministrator
 <#
-  SHXDOW CLEANUP v3.3 - THE FINAL FUSION
-  Build: 2026-04-02
+  SHXDOW CLEANUP v3.3 - MULTI-LANG EDITION
+  Build: 2026-04-03
   Author: Shxdow
-  Features: JSON Config, Action Logging, Deep Gaming, Hardware Opti, SSD ReTrim & Multi-Browser
 #>
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -14,20 +13,68 @@ $C = [char]27 + "[1;36m"; $W = [char]27 + "[1;37m"; $G = [char]27 + "[1;32m"; $R
 $Y = [char]27 + "[1;33m"; $DC = [char]27 + "[0;36m"; $RE = [char]27 + "[0m"
 #endregion
 
-#region CONFIG & LOGGING
+#region CONFIG & LANGUAGE ENGINE
 $ConfigPath = Join-Path $PSScriptRoot "config.json"
 $LogPath = "$env:TEMP\ShxdowCleaner.log"
 
+# Chargement Config
 if (Test-Path $ConfigPath) { 
     try { $Config = Get-Content $ConfigPath | ConvertFrom-Json } catch { $Config = $null } 
 }
-if ($null -eq $Config) {
+
+# Initialisation si vide ou première fois
+if ($null -eq $Config -or $null -eq $Config.language) {
+    Clear-Host
+    Write-Host "`n$C [1] Français  [2] English$RE"
+    $langChoice = Read-Host " ► Language"
+    $lang = if ($langChoice -eq "2") { "EN" } else { "FR" }
+    
     $Config = [PSCustomObject]@{
+        language = $lang
         backupDir = "C:\RegistryBackups"
         enableLogging = $true
         modules = @{ gaming = $true; web = $true; hardware = $true }
     }
+    $Config | ConvertTo-Json | Set-Content $ConfigPath
 }
+
+# Dictionnaire des traductions
+$Msgs = @{
+    FR = @{
+        Menu = " [1] Temp  [2] Web  [3] Gaming  [4] Système  [5] Opti  [6] Hardware  [O] Complet  [0] Quitter"
+        Action = " ► Action > "
+        Analyse = " Analyse : "
+        Exist = " [Inexistant]"
+        Empty = " [Déjà Vide]"
+        Partial = " [Accès Partiel]"
+        Ghost = " périphériques fantômes supprimés"
+        OptiDone = " Optimisations complètes appliquées (VBS OFF, RAM Flush, SSD Trim)"
+        Bilan = " BILAN : {0} récupérés réellement"
+        Time = " Temps : "
+        ReportAsk = " Enregistrer le rapport sur le Bureau ? (O/N)"
+        ReportDone = " [✔] Rapport créé sur le Bureau."
+        RestartAsk = " Redémarrer maintenant pour finaliser ? (O/N)"
+        Continue = " Appuyez sur Entrée pour continuer..."
+    }
+    EN = @{
+        Menu = " [1] Temp  [2] Web  [3] Gaming  [4] System  [5] Opti  [6] Hardware  [O] Full  [0] Exit"
+        Action = " ► Action > "
+        Analyse = " Scanning : "
+        Exist = " [Missing]"
+        Empty = " [Already Empty]"
+        Partial = " [Partial Access]"
+        Ghost = " ghost devices removed"
+        OptiDone = " Full optimizations applied (VBS OFF, RAM Flush, SSD Trim)"
+        Bilan = " TOTAL: {0} actually recovered"
+        Time = " Time: "
+        ReportAsk = " Save report to Desktop? (Y/N)"
+        ReportDone = " [✔] Report created on Desktop."
+        RestartAsk = " Restart now to finalize? (Y/N)"
+        Continue = " Press Enter to continue..."
+    }
+}
+$M = $Msgs[$Config.language] # On charge la langue sélectionnée
+#endregion
 
 function Fmt([long]$b) {
     if ($b -ge 1GB) { return "{0:N2} GB" -f ($b / 1GB) }
@@ -41,13 +88,12 @@ function Log-Action([string]$action, [long]$freed) {
         $entry | Out-File $LogPath -Append -Encoding UTF8
     }
 }
-#endregion
 
 #region CORE ENGINE
 function Clean-Target([string]$path, [string]$label) {
-    Write-Host "  $W> Analyse : $C$label$RE" -NoNewline
+    Write-Host "  $W>$($M.Analyse)$C$label$RE" -NoNewline
     if (-not (Test-Path $path)) { 
-        Write-Host " $R[Inexistant]$RE"
+        Write-Host " $($R)$($M.Exist)$RE"
         return 0 
     }
     
@@ -61,11 +107,11 @@ function Clean-Target([string]$path, [string]$label) {
             Write-Host " $G[+$(Fmt $freed)]$RE"
             Log-Action $label $freed
         } else {
-            Write-Host " $DC[Déjà Vide]$RE"
+            Write-Host " $DC$($M.Empty)$RE"
         }
         return $freed
     } catch {
-        Write-Host " $Y[Accès Partiel]$RE"
+        Write-Host " $Y$($M.Partial)$RE"
         return 0
     }
 }
@@ -138,7 +184,7 @@ function Invoke-HardwareModule {
     $t += Clean-Target "$env:LOCALAPPDATA\Intel\ShaderCache" "Intel GPU Cache"
     $rem = 0
     Get-PnpDevice | Where-Object { $_.Present -eq $false } | ForEach-Object { try { $_ | Remove-PnpDevice -Confirm:$false; $rem++ } catch {} }
-    if ($rem -gt 0) { Write-Host "  $G[✔] $rem périphériques fantômes supprimés$RE" }
+    if ($rem -gt 0) { Write-Host "  $G[✔] $rem $($M.Ghost)$RE" }
     return $t
 }
 
@@ -153,7 +199,7 @@ function Invoke-OptiModule {
     Add-Type $code -EA SilentlyContinue
     Get-Process | ForEach-Object { [Shxdow]::EmptyWorkingSet($_.Handle) } 2>$null
 
-    # Services & Registre (VBS, DVR, Telemetry)
+    # Services & Registre
     $srv = @("DiagTrack", "dmwappushservice")
     foreach ($s in $srv) { Stop-Service $s -Force; Set-Service $s -StartupType Disabled }
     
@@ -173,7 +219,7 @@ function Invoke-OptiModule {
     ipconfig /flushdns | Out-Null
     netsh interface ip delete arpcache | Out-Null
     Optimize-Volume -DriveLetter C -ReTrim -EA SilentlyContinue
-    Write-Host "  $G[✔] Optimisations complètes appliquées (VBS OFF, RAM Flush, SSD Trim)$RE"
+    Write-Host "  $G[✔] $($M.OptiDone)$RE"
 }
 
 function Write-Section([string]$title) {
@@ -185,16 +231,16 @@ function Write-Section([string]$title) {
 while ($true) {
     Clear-Host
     Write-Host "$C
-  ██████╗ ██╗  ██╗██╗  ██╗██████╗  ██████╗ ██╗    ██╗    ██████╗██╗      ███████╗ █████╗ ███╗   ██╗██╗   ██╗██████╗ 
- ██╔════╝ ██║  ██║╚██╗██╔╝██╔══██╗██╔═══██╗██║    ██║   ██╔════╝██║      ██╔════╝██╔══██╗████╗  ██║██║   ██║██╔══██╗
- ███████╗ ███████║ ╚███╔╝ ██║  ██║██║   ██║██║ █╗ ██║   ██║     ██║      █████╗  ███████║██╔██╗ ██║██║   ██║██████╔╝
- ╚════██║ ██╔══██║ ██╔██╗ ██║  ██║██║   ██║██║███╗██║   ██║     ██║      ██╔══╝  ██╔══██║██║╚██╗██║██║   ██║██╔═══╝ 
- ██████╔╝ ██║  ██║██╔╝ ██╗██████╔╝╚██████╔╝╚███╔███╔╝   ╚██████╗███████╗███████╗██║  ██║██║ ╚████║╚██████╔╝██║     
+  ██████╗ ██╗  ██╗██╗  ██╗██████╗  ██████╗ ██╗    ██╗    ██████╗██╗      ███████╗ █████╗ ███╗    ██╗██╗   ██╗██████╗ 
+ ██╔════╝ ██║  ██║╚██╗██╔╝██╔══██╗██╔═══██╗██║     ██║    ██╔════╝██║      ██╔════╝██╔══██╗████╗  ██║██║   ██║██╔══██╗
+ ███████╗ ███████║ ╚███╔╝ ██║  ██║██║   ██║██║ █╗ ██║    ██║     ██║      █████╗  ███████║██╔██╗ ██║██║   ██║██████╔╝
+ ╚════██║ ██╔══██║ ██╔██╗ ██║  ██║██║   ██║██║███╗██║    ██║     ██║      ██╔══╝  ██╔══██║██║╚██╗██║██║   ██║██╔═══╝ 
+ ██████╔╝ ██║  ██║██╔╝ ██╗██████╔╝╚██████╔╝╚███╔███╔╝    ╚██████╗███████╗███████╗██║  ██║██║ ╚████║╚██████╔╝██║     
  ╚═════╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚══╝╚══╝     ╚═════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝     
 $RE$Y                                     by Shxdow  $RE$DC v3.3 FINAL$RE"
 
-    Write-Host "`n$W [1] Temp  [2] Web  [3] Gaming  [4] Système  [5] Opti  [6] Hardware  [O] Complet  [0] Quitter$RE"
-    Write-Host "`n$C ► Action > $RE" -NoNewline
+    Write-Host "`n$W $($M.Menu)$RE"
+    Write-Host "`n$C$($M.Action)$RE" -NoNewline
     $choice = (Read-Host).ToUpper()
     if ($choice -eq "0") { break }
 
@@ -214,21 +260,21 @@ $RE$Y                                     by Shxdow  $RE$DC v3.3 FINAL$RE"
     $realGain = if ($diskAfter -gt $diskBefore) { $diskAfter - $diskBefore } else { 0 }
     
     Write-Host "`n$DC" + ("═" * 45)
-    Write-Host "  $G BILAN : $(Fmt $realGain) récupérés réellement$RE"
-    Write-Host "  $W Temps : $((Get-Date) - $start | ForEach-Object { "$($_.Seconds)s" }) $RE"
+    Write-Host ("  $G" + ($M.Bilan -f (Fmt $realGain)) + "$RE")
+    Write-Host "  $W$($M.Time)$((Get-Date) - $start | ForEach-Object { "$($_.Seconds)s" }) $RE"
     Write-Host "$DC" + ("═" * 45)
     
-    # --- OPTIONS DE FIN (Comme dans la 3.1) ---
-    Write-Host "`n  $C[?] Enregistrer le rapport sur le Bureau ? (O/N)$RE" -NoNewline
-    if ((Read-Host) -match "^[Oo]$") {
+    # --- OPTIONS DE FIN ---
+    Write-Host "`n  $C[?]$($M.ReportAsk)$RE" -NoNewline
+    if ((Read-Host) -match "^[OoYy]$") {
         $reportPath = "$env:USERPROFILE\Desktop\Shxdow_Report.txt"
-        "SHXDOW CLEANUP v3.3`nDate: $(Get-Date)`nGain réel: $(Fmt $realGain)" | Out-File $reportPath
-        Write-Host "  $G[✔] Rapport créé sur le Bureau.$RE"
+        "SHXDOW CLEANUP v3.3`nDate: $(Get-Date)`nGain: $(Fmt $realGain)" | Out-File $reportPath
+        Write-Host "  $G$($M.ReportDone)$RE"
     }
 
-    Write-Host "  $Y[?] Redémarrer maintenant pour finaliser ? (O/N)$RE" -NoNewline
-    if ((Read-Host) -match "^[Oo]$") { Restart-Computer -Force }
+    Write-Host "  $Y[?]$($M.RestartAsk)$RE" -NoNewline
+    if ((Read-Host) -match "^[OoYy]$") { Restart-Computer -Force }
 
-    Write-Host "`n  Appuyez sur Entrée pour continuer..." -NoNewline; Read-Host | Out-Null
+    Write-Host "`n  $($M.Continue)" -NoNewline; Read-Host | Out-Null
 }
 #endregion
