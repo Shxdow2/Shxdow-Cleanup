@@ -1,70 +1,49 @@
-# 🛠️ Shxdow Cleanup v3.3
-> **Advanced Windows Optimization Engine & System Hardening Tool**
+# 🚀 **Shxdow Cleanup v3.3.1**
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Shxdow2/Shxdow-Cleanup?style=for-the-badge&color=5391FE)
-![GitHub last commit](https://img.shields.io/github/last-commit/Shxdow2/Shxdow-Cleanup?style=for-the-badge&color=A2D2FF)
-![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
-![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+[![Version](https://img.shields.io/badge/version-3.3.1-blue.svg)](https://github.com/Shxdow2/Shxdow-Cleanup/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-lightgrey.svg)](https://www.microsoft.com/windows)
 
----
-
-## 🎯 Overview
-**Shxdow Cleanup** is not just a temp file deleter. It's a comprehensive optimization suite designed to reduce system latency, free up disk space, and improve gaming performance by targeting deep system caches that standard tools miss.
-
-### ✨ Key Advantages
-| Feature | Windows Disk Cleanup | Shxdow Cleanup |
-| :--- | :---: | :---: |
-| **Basic Temp Files** | ✅ | ✅ |
-| **DirectX Shader Cache** | ❌ | ✅ |
-| **Nvidia/AMD Cache** | ❌ | ✅ |
-| **Discord/Spotify Cache** | ❌ | ✅ |
-| **RAM Optimization** | ❌ | ✅ |
-| **One-Click Execution** | ❌ | ✅ |
+**Shxdow Cleanup** est un outil de maintenance avancé conçu pour optimiser les performances de votre système, libérer de l'espace disque et réduire la latence pour le gaming.
 
 ---
 
-## 📖 Table of Contents
-* [🚀 Getting Started](#-getting-started)
-* [🏗️ Core Modules](#️-core-modules)
-* [⚙️ Runtimes & Dependencies](#️-runtimes--dependencies)
-* [🛡️ Security & Privacy](#-security--privacy)
-* [🔗 Connect with me](#-connect-with-me)
+## ✨ **Main Features**
+
+* 🌍 **Multi-Language Support:** Full **English** and **French** support with automatic configuration saving.
+* ⚡ **Deep Gaming Optimization:** Disables **VBS**, flushes **RAM** via native C# API, and clears **DNS/ARP** caches.
+* 💾 **Hardware Care:** Native **SSD ReTrim** and automatic removal of **Ghost Devices** (PnP).
+* 🧹 **Complete Cleaning:** Deep cleans **Chrome, Edge, Brave, and Opera GX** plus all system temporary files.
+* 🛡️ **Safe & Reliable:** Automatic Windows version check and real-time **Logging** of all actions.
 
 ---
 
-## 🚀 Getting Started
-To get the best performance, we recommend using the **Official Release**:
+## 📥 **Installation & Usage**
 
-1. **Download** the latest [Release ZIP](https://github.com/Shxdow2/Shxdow-Cleanup/releases/latest).
-2. **Extract** the folder to your Desktop.
-3. **Run** `Shxdow-Cleanup-Launcher.bat` as Administrator.
+1. Go to the [**Releases**](https://github.com/Shxdow2/Shxdow-Cleanup/releases) page.
+2. Download the **`Cleanup-Shxdow.7z`** archive.
+3. Extract the folder to your computer.
+4. Right-click **`Shxdow-Cleanup-Launcher.bat`** and select **Run as Administrator**.
 
----
-
-## 🏗️ Core Modules
-The engine is divided into specialized modules for maximum efficiency:
-* **`System.DeepClean`**: Cleans Prefetch, Temp, Cryptography, and RSA logs.
-* **`Gaming.Optimize`**: Flushes GPU shader caches and optimizes game store data.
-* **`App.Sanitize`**: Targets bloated cache from Electron apps (Discord, Spotify).
-* **`Net.Maintenance`**: Flushes DNS and resets network stack for lower ping.
+> [!IMPORTANT]
+> **Windows 10 or 11** is required. The script will automatically create a **`config.json`** file on first launch to save your language preference.
 
 ---
 
-## ⚙️ Runtimes & Dependencies
-To ensure all optimization modules work at 100%, the following runtimes are utilized:
+## 📊 **What's New in v3.3.1?**
 
-* **[PowerShell 5.1+](https://aka.ms/PSWindows)**: Native Windows engine used for deep system hooks.
-* **[.NET Framework 4.8+](https://dotnet.microsoft.com/download/dotnet-framework)**: The backbone of the cleanup logic (pre-installed on Win 10/11).
-* **[Windows Management Instrumentation (WMI)](https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page)**: Used for real-time RAM and hardware cache flushing.
-
----
-
-## 🛡️ Security & Privacy
-* **Zero Telemetry:** No data ever leaves your machine.
-* **Read-Only Logic:** The script never touches essential Windows Kernel files.
-* **Open Source:** Every line of code is auditable by the community.
+* Added **Internationalization** (Switch between FR/EN).
+* New **Hardware Optimization** module (SSD & PnP).
+* Improved **RAM Management** for smoother multitasking.
+* Enhanced **Browser Support** for modern web cleaners.
 
 ---
 
-## 🔗 Connect with me
-[![GitHub](https://img.shields.io/badge/GitHub-Shxdow2-181717?style=flat-square&logo=github)](https://github.com/Shxdow2)
+## 🛠 **Configuration**
+
+The script uses a **`config.json`** file to store your settings:
+```json
+{
+    "language": "EN",
+    "backupDir": "C:\\RegistryBackups",
+    "enableLogging": true
+}
