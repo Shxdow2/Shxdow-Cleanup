@@ -1,5 +1,4 @@
-============================================================
-           SHXDOW CLEANUP v3.3.1 - CHANGELOG 
+          SHXDOW CLEANUP v3.3.1 - CHANGELOG 
 Build: 2026-04-03 | Status: Stable / Final / English
 Author: Shxdow
 ============================================================
