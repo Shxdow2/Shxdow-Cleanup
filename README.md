@@ -39,7 +39,7 @@ Full **French** and **English** support. Language is selected on first launch an
 | 2 | **Web** | Chrome, Edge, Brave, Opera GX, Discord, Spotify, Teams, Office |
 | 3 | **Gaming** | Steam, Riot Client, Valorant, Fortnite, Epic Games, EAC |
 | 4 | **System** | Windows Update cache, Event Logs, CBS Logs, WER Reports, Recycle Bin |
-| 6 | **Hardware** | Intel Driver Logs, Surface Diagnostics, Intel GPU Cache, Ghost PnP Devices |
+| 5 | **Hardware** | Intel Driver Logs, Surface Diagnostics, Intel GPU Cache, Ghost PnP Devices |
 
 ### ⚡ Performance Tweaks — `[5] Opti`
 - **RAM Flush** via native C# `EmptyWorkingSet` API
