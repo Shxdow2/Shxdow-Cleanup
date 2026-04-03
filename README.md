@@ -110,7 +110,7 @@ Set `"language"` to `"EN"` for English. Set any module to `false` to skip it ent
 
 ## 📊 Changelog
 
-### [v3.3] — 2026-04-03
+### [v3.3.1] — 2026-04-03
 - ✅ Full **FR/EN internationalization** — language selected at first launch, persisted in config
 - ✅ Translation dictionary `$Msgs` with dynamic `$M` loader
 - ✅ Added **Brave** and **Opera GX** to web cleaning module
