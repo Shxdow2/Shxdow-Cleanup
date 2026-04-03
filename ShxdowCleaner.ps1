@@ -1,8 +1,8 @@
 #Requires -RunAsAdministrator
 <#
   SHXDOW CLEANUP v3.3.1
-  Build: 2026-04-03
-  Author: Shxdow
+  Build: 2026-04-03 | Author: Shxdow
+  FULL PATCH: All Paths + Config Guards + Reg Backup + ARP Flush
 #>
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -17,12 +17,10 @@ $Y = [char]27 + "[1;33m"; $DC = [char]27 + "[0;36m"; $RE = [char]27 + "[0m"
 $ConfigPath = Join-Path $PSScriptRoot "config.json"
 $LogPath = "$env:TEMP\ShxdowCleaner.log"
 
-# Chargement Config
 if (Test-Path $ConfigPath) { 
     try { $Config = Get-Content $ConfigPath | ConvertFrom-Json } catch { $Config = $null } 
 }
 
-# Initialisation si vide ou première fois
 if ($null -eq $Config -or $null -eq $Config.language) {
     Clear-Host
     Write-Host "`n$C [1] Français  [2] English$RE"
@@ -38,17 +36,24 @@ if ($null -eq $Config -or $null -eq $Config.language) {
     $Config | ConvertTo-Json | Set-Content $ConfigPath
 }
 
-# Dictionnaire des traductions
 $Msgs = @{
     FR = @{
-        Menu = " [1] Temp  [2] Web  [3] Gaming  [4] Système  [5] Opti  [6] Hardware  [O] Complet  [0] Quitter"
-        Action = " ► Action > "
+        BannerTitle = " MODULES DE NETTOYAGE "
+        Menu1 = "Temporaires — Windows, Prefetch, Crypto, RSA"
+        Menu2 = "Web & Apps — Browsers, Teams, Discord, Spotify"
+        Menu3 = "Gaming — Steam, Fortnite, Epic, Riot, Shaders"
+        Menu4 = "Système — Updates, CBS, Logs, WER, Recycle"
+        Menu5 = "Optimisation — RAM, DNS, ARP, VBS, Telemetry"
+        Menu6 = "Hardware — Surface Pro 8 & Intel Specific"
+        MenuO = "Lancer le nettoyage complet"
+        MenuQ = "Quitter"
+        Action = " Action "
         Analyse = " Analyse : "
         Exist = " [Inexistant]"
         Empty = " [Déjà Vide]"
         Partial = " [Accès Partiel]"
         Ghost = " périphériques fantômes supprimés"
-        OptiDone = " Optimisations complètes appliquées (VBS OFF, RAM Flush, SSD Trim)"
+        OptiDone = " Système optimisé (RAM, SSD, DNS, ARP, VBS OFF)"
         Bilan = " BILAN : {0} récupérés réellement"
         Time = " Temps : "
         ReportAsk = " Enregistrer le rapport sur le Bureau ? (O/N)"
@@ -57,14 +62,22 @@ $Msgs = @{
         Continue = " Appuyez sur Entrée pour continuer..."
     }
     EN = @{
-        Menu = " [1] Temp  [2] Web  [3] Gaming  [4] System  [5] Opti  [6] Hardware  [O] Full  [0] Exit"
-        Action = " ► Action > "
+        BannerTitle = " CLEANUP MODULES "
+        Menu1 = "Temp Files — Windows, Prefetch, Crypto, RSA"
+        Menu2 = "Web & Apps — Browsers, Teams, Discord, Spotify"
+        Menu3 = "Gaming — Steam, Fortnite, Epic, Riot, Shaders"
+        Menu4 = "System — Updates, CBS, Logs, WER, Recycle"
+        Menu5 = "Optimization — RAM, DNS, ARP, VBS, Telemetry"
+        Menu6 = "Hardware — Surface Pro 8 & Intel Specific"
+        MenuO = "Launch full cleanup"
+        MenuQ = "Exit"
+        Action = " Action "
         Analyse = " Scanning : "
         Exist = " [Missing]"
         Empty = " [Already Empty]"
         Partial = " [Partial Access]"
         Ghost = " ghost devices removed"
-        OptiDone = " Full optimizations applied (VBS OFF, RAM Flush, SSD Trim)"
+        OptiDone = " System optimized (RAM, SSD, DNS, ARP, VBS OFF)"
         Bilan = " TOTAL: {0} actually recovered"
         Time = " Time: "
         ReportAsk = " Save report to Desktop? (Y/N)"
@@ -73,9 +86,10 @@ $Msgs = @{
         Continue = " Press Enter to continue..."
     }
 }
-$M = $Msgs[$Config.language] # On charge la langue sélectionnée
+$M = $Msgs[$Config.language]
 #endregion
 
+#region HELPERS
 function Fmt([long]$b) {
     if ($b -ge 1GB) { return "{0:N2} GB" -f ($b / 1GB) }
     if ($b -ge 1MB) { return "{0:N2} MB" -f ($b / 1MB) }
@@ -88,6 +102,14 @@ function Log-Action([string]$action, [long]$freed) {
         $entry | Out-File $LogPath -Append -Encoding UTF8
     }
 }
+
+function Write-Section([string]$title) {
+    $line = "═" * ($title.Length + 4)
+    Write-Host "`n$DC  ╔$line╗"
+    Write-Host "  ║  $W$title$DC  ║"
+    Write-Host "  ╚$line╝$RE`n"
+}
+#endregion
 
 #region CORE ENGINE
 function Clean-Target([string]$path, [string]$label) {
@@ -175,21 +197,9 @@ function Invoke-SystemModule {
     return $t
 }
 
-function Invoke-HardwareModule {
-    if (-not $Config.modules.hardware) { return 0 }
-    Write-Section "HARDWARE & SURFACE"
-    $t = 0
-    $t += Clean-Target "C:\Intel\Logs" "Intel Driver Logs"
-    $t += Clean-Target "$env:ProgramData\Microsoft\Surface" "Surface Diagnostic"
-    $t += Clean-Target "$env:LOCALAPPDATA\Intel\ShaderCache" "Intel GPU Cache"
-    $rem = 0
-    Get-PnpDevice | Where-Object { $_.Present -eq $false } | ForEach-Object { try { $_ | Remove-PnpDevice -Confirm:$false; $rem++ } catch {} }
-    if ($rem -gt 0) { Write-Host "  $G[✔] $rem $($M.Ghost)$RE" }
-    return $t
-}
-
 function Invoke-OptiModule {
     Write-Section "PERFORMANCE TWEAKS"
+    # --- FIX: Backup Registre ---
     $bDir = $Config.backupDir
     if (!(Test-Path $bDir)) { New-Item $bDir -ItemType Directory | Out-Null }
     reg export HKLM (Join-Path $bDir "PreOpti_$(Get-Date -Format 'HHmm').reg") /y | Out-Null
@@ -199,6 +209,10 @@ function Invoke-OptiModule {
     Add-Type $code -EA SilentlyContinue
     Get-Process | ForEach-Object { [Shxdow]::EmptyWorkingSet($_.Handle) } 2>$null
 
+    # --- FIX: DNS & ARP Flush ---
+    ipconfig /flushdns | Out-Null
+    netsh interface ip delete arpcache | Out-Null
+    
     # Services & Registre
     $srv = @("DiagTrack", "dmwappushservice")
     foreach ($s in $srv) { Stop-Service $s -Force; Set-Service $s -StartupType Disabled }
@@ -216,14 +230,21 @@ function Invoke-OptiModule {
         Set-ItemProperty -Path $key.Path -Name $key.Name -Value $key.Value -Type DWord 
     }
 
-    ipconfig /flushdns | Out-Null
-    netsh interface ip delete arpcache | Out-Null
     Optimize-Volume -DriveLetter C -ReTrim -EA SilentlyContinue
     Write-Host "  $G[✔] $($M.OptiDone)$RE"
 }
 
-function Write-Section([string]$title) {
-    Write-Host "`n$DC--- [ $title ] ---$RE"
+function Invoke-HardwareModule {
+    if (-not $Config.modules.hardware) { return 0 }
+    Write-Section "HARDWARE & SURFACE"
+    $t = 0
+    $t += Clean-Target "C:\Intel\Logs" "Intel Driver Logs"
+    $t += Clean-Target "$env:ProgramData\Microsoft\Surface" "Surface Diagnostic"
+    $t += Clean-Target "$env:LOCALAPPDATA\Intel\ShaderCache" "Intel GPU Cache"
+    $rem = 0
+    Get-PnpDevice | Where-Object { $_.Present -eq $false } | ForEach-Object { try { $_ | Remove-PnpDevice -Confirm:$false; $rem++ } catch {} }
+    if ($rem -gt 0) { Write-Host "  $G[✔] $rem $($M.Ghost)$RE" }
+    return $t
 }
 #endregion
 
@@ -231,16 +252,29 @@ function Write-Section([string]$title) {
 while ($true) {
     Clear-Host
     Write-Host "$C
-  ██████╗ ██╗  ██╗██╗  ██╗██████╗  ██████╗ ██╗    ██╗    ██████╗██╗      ███████╗ █████╗ ███╗    ██╗██╗   ██╗██████╗ 
- ██╔════╝ ██║  ██║╚██╗██╔╝██╔══██╗██╔═══██╗██║     ██║    ██╔════╝██║      ██╔════╝██╔══██╗████╗  ██║██║   ██║██╔══██╗
- ███████╗ ███████║ ╚███╔╝ ██║  ██║██║   ██║██║ █╗ ██║    ██║     ██║      █████╗  ███████║██╔██╗ ██║██║   ██║██████╔╝
- ╚════██║ ██╔══██║ ██╔██╗ ██║  ██║██║   ██║██║███╗██║    ██║     ██║      ██╔══╝  ██╔══██║██║╚██╗██║██║   ██║██╔═══╝ 
- ██████╔╝ ██║  ██║██╔╝ ██╗██████╔╝╚██████╔╝╚███╔███╔╝    ╚██████╗███████╗███████╗██║  ██║██║ ╚████║╚██████╔╝██║     
- ╚═════╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚══╝╚══╝     ╚═════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝     
-$RE$Y                                     by Shxdow  $RE$DC v3.3.1 FINAL$RE"
+ ██████╗ ██╗  ██╗██╗  ██╗██████╗  ██████╗ ██╗    ██╗    ██████╗██╗      ███████╗ █████╗ ███╗    ██╗██╗   ██╗██████╗ 
+██╔════╝ ██║  ██║╚██╗██╔╝██╔══██╗██╔═══██╗██║    ██║    ██╔════╝██║      ██╔════╝██╔══██╗████╗  ██║██║   ██║██╔══██╗
+███████╗ ███████║ ╚███╔╝ ██║  ██║██║   ██║██║ █╗ ██║    ██║      ██║      █████╗  ███████║██╔██╗ ██║██║   ██║██████╔╝
+╚════██║ ██╔══██║ ██╔██╗ ██║  ██║██║   ██║██║███╗██║    ██║      ██║      ██╔══╝  ██╔══██║██║╚██╗██║██║   ██║██╔═══╝ 
+██████╔╝ ██║  ██║██╔╝ ██╗██████╔╝╚██████╔╝╚███╔███╔╝    ╚██████╗███████╗███████╗██║  ██║██║ ╚████║╚██████╔╝██║     
+╚═════╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚══╝╚══╝     ╚═════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝     
+$RE$Y                                       by Shxdow  $RE$DC v3.3.1$RE"
 
-    Write-Host "`n$W $($M.Menu)$RE"
-    Write-Host "`n$C$($M.Action)$RE" -NoNewline
+    Write-Host "`n$DC╔══════════════════════════════════════════════════╗"
+    Write-Host "║               $C$($M.BannerTitle)$RE$DC               ║"
+    Write-Host "╠══════════════════════════════════════════════════╣$RE"
+    Write-Host "$W [1]$RE   $C $($M.Menu1)$RE"
+    Write-Host "$W [2]$RE   $C $($M.Menu2)$RE"
+    Write-Host "$W [3]$RE   $C $($M.Menu3)$RE"
+    Write-Host "$W [4]$RE   $C $($M.Menu4)$RE"
+    Write-Host "$W [5]$RE   $C $($M.Menu5)$RE"
+    Write-Host "$W [6]$RE   $C $($M.Menu6)$RE"
+    Write-Host "$DC╠══════════════════════════════════════════════════╣$RE"
+    Write-Host "$W [O]$RE   $C $($M.MenuO)$RE"
+    Write-Host "$W [0]$RE   $C $($M.MenuQ)$RE"
+    Write-Host "$DC╚══════════════════════════════════════════════════╝$RE"
+
+    Write-Host "`n$C  ►$RE $W$($M.Action)$RE $DC>$RE " -NoNewline
     $choice = (Read-Host).ToUpper()
     if ($choice -eq "0") { break }
 
@@ -259,12 +293,10 @@ $RE$Y                                     by Shxdow  $RE$DC v3.3.1 FINAL$RE"
     $diskAfter = (Get-PSDrive C).Free
     $realGain = if ($diskAfter -gt $diskBefore) { $diskAfter - $diskBefore } else { 0 }
     
-    Write-Host "`n$DC" + ("═" * 45)
+    Write-Section "BILAN"
     Write-Host ("  $G" + ($M.Bilan -f (Fmt $realGain)) + "$RE")
     Write-Host "  $W$($M.Time)$((Get-Date) - $start | ForEach-Object { "$($_.Seconds)s" }) $RE"
-    Write-Host "$DC" + ("═" * 45)
     
-    # --- OPTIONS DE FIN ---
     Write-Host "`n  $C[?]$($M.ReportAsk)$RE" -NoNewline
     if ((Read-Host) -match "^[OoYy]$") {
         $reportPath = "$env:USERPROFILE\Desktop\Shxdow_Report.txt"
