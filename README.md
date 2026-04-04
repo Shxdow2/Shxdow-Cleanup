@@ -95,15 +95,17 @@ Shxdow-Cleanup/
 
 ```json
 {
-    "language": "FR",
-    "backupDir": "C:\\RegistryBackups",
-    "enableLogging": true,
-    "modules": {
-        "gaming": true,
-        "web": true,
-        "hardware": true
-    }
+    "language":  "FR",
+    "backupDir":  "C:\\RegistryBackups",
+    "enableLogging":  true,
+    "modules":  {
+                    "gaming":  true,
+                    "web":  true,
+                    "dev":  true,
+                    "hardware":  true
+                }
 }
+
 ```
 
 Set `"language"` to `"EN"` for English. Set any module to `false` to skip it entirely.
