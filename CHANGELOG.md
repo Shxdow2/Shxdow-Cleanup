@@ -63,7 +63,5 @@ Project: System Optimization & Gaming Performance
   to reduce system interrupts.
 
 
-============================================================
-  "Optimizing your system isn't a task, it's an art."
+
   © 2026 Shxdow Development. All Rights Reserved. ⚡
-============================================================
