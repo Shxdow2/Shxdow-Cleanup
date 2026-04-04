@@ -1,11 +1,25 @@
-# Logs
+# --- Logs & Temp ---
 *.log
 ShxdowCleaner.log
- 
-# Backups Registre (Sécurité)
-C:/RegistryBackups/
+# Au cas où tu génères des rapports sur le bureau
+Shxdow_Report.txt
+
+# --- Sécurité & Backups ---
+# On ignore les fichiers reg et le dossier de backup local
 *.reg
- 
-# Config locale
+C:/RegistryBackups/
+RegistryBackups/
+
+# --- Configuration Personnelle ---
+# Pour éviter de leak tes préférences ou ton setup de test
 config.json
- 
+
+# --- Environnement de Dev (Optionnel mais recommandé) ---
+.vscode/
+.idea/
+*.bak
+*.tmp
+
+# --- Système ---
+Thumbs.db
+Desktop.ini
