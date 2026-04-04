@@ -1,5 +1,6 @@
-⚡ SHXDOW CLEANUP TOOL — THE FINAL EVOLUTION ⚡
-
+======================================================================
+         ⚡ SHXDOW CLEANUP TOOL — THE FINAL EVOLUTION ⚡
+======================================================================
 Build: 2026-04-05 | Status: Stable
 Author: Shxdow
 Project: System Optimization & Gaming Performance
