@@ -1,4 +1,4 @@
-# ⚡ Shxdow Cleanup — v3.3.1
+# ⚡ Shxdow Cleanup — v3.4
 
 <div align="center">
 
@@ -65,15 +65,11 @@ Full **French** and **English** support. Language is selected on first launch an
 ## 📥 Installation
 
 1. Go to the [**Releases**](https://github.com/Shxdow2/Shxdow-Cleanup/releases) page
-2. Download **`Cleanup-Shxdow.7z`**
-3. Extract the archive anywhere on your machine
-4. Right-click **`Shxdow-Cleanup-Launcher.bat`** → **Run as Administrator**
+2. Download **`Cleanup-Shxdow.exe`**
+3. Right-click **`Shxdow-Cleanup-Launcher.bat`** → **Run as Administrator**
 
-> [!IMPORTANT]
-> Administrator privileges are **strictly required**. Without elevation, system paths, registry keys, and hardware-level commands will silently fail or be skipped.
-
-> [!NOTE]
-> On first launch, you will be prompted to choose your language (FR/EN). This is saved in `config.json` next to the script and won't be asked again.
+[!IMPORTANT]
+Administrator privileges are mandatory. System-level optimizations, registry modifications, and hardware cleaning will be skipped if the tool is not elevated.
 
 ---
 
@@ -81,10 +77,9 @@ Full **French** and **English** support. Language is selected on first launch an
 
 ```
 Shxdow-Cleanup/
-├── Shxdow-Cleanup-Launcher.bat   ← Entry point (run this as Admin)
-├── ShxdowCleanup.ps1             ← Main script
-├── config.json                   ← Auto-generated on first run
-└── CHANGELOG.md
+├── Shxdow-Cleanup.exe     ← Standalone App (Run as Admin)
+├── config.json            ← Auto-generated preferences
+└── CHANGELOG.md           ← History of evolutions
 ```
 
 > `config.json` stores your language preference, backup directory path, logging toggle, and enabled modules. You can edit it manually if needed.
@@ -95,15 +90,15 @@ Shxdow-Cleanup/
 
 ```json
 {
-    "language":  "FR",
-    "backupDir":  "C:\\RegistryBackups",
-    "enableLogging":  true,
-    "modules":  {
-                    "gaming":  true,
-                    "web":  true,
-                    "dev":  true,
-                    "hardware":  true
-                }
+    "language": "FR",
+    "backupDir": "C:\\RegistryBackups",
+    "enableLogging": true,
+    "modules": {
+        "gaming": true,
+        "web": true,
+        "hardware": true,
+        "opti": true
+    }
 }
 
 ```
