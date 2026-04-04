@@ -2,12 +2,14 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/Version-3.3.2%20Ultimate-cyan?style=for-the-badge&logo=github)
-![Engine](https://img.shields.io/badge/Engine-Multi--Drive%20Ready-success?style=for-the-badge&logo=powershell)
-![Performance](https://img.shields.io/badge/Speed-Insta--Flush-orange?style=for-the-badge&logo=lightning)
-![Security](https://img.shields.io/badge/Safety-Reg--Backup%20Enabled-blueviolet?style=for-the-badge&logo=shield)
-![Platform](https://img.shields.io/badge/Windows-10%20%7C%2011%20Supported-0078D4?style=for-the-badge&logo=windows)
-![Status](https://img.shields.io/badge/Build-Stable-green?style=for-the-badge)
+![Microsoft](https://img.shields.io/badge/Microsoft-Certified%20Logic-0078D4?style=for-the-badge&logo=microsoft)
+![PowerShell](https://img.shields.io/badge/PowerShell-Core%20%7C%207.4-blue?style=for-the-badge&logo=powershell)
+![Windows](https://img.shields.io/badge/Windows-Server%20%26%20Desktop-0078D4?style=for-the-badge&logo=windows)
+![GitHub](https://img.shields.io/badge/Open--Source-MIT%20License-lightgrey?style=for-the-badge&logo=github)
+![Azure](https://img.shields.io/badge/Cloud-Azure%20Hybrid%20Ready-0089D6?style=for-the-badge&logo=microsoftazure)
+![Security](https://img.shields.io/badge/Security-AMSI%20Compliant-red?style=for-the-badge&logo=checkmarx)
+![Optimization](https://img.shields.io/badge/Performance-Kernel%20Flush-FFB900?style=for-the-badge&logo=speedtest)
+![Status](https://img.shields.io/badge/Update-April%202026-brightgreen?style=for-the-badge)
 
 **A powerful, modular Windows cleanup & optimization tool built in PowerShell.**  
 *Deep clean. Real gains. Zero bloat.*
