@@ -1,11 +1,12 @@
 ------------------------------------------------------------
-**⚡  Shxdow Clean TOOL  ⚡**   
+**⚡  Shxdow Cleaner TOOL  ⚡**   
 ------------------------------------------------------------
 Build: 2026-04-05  |  Status: Stable  |  Author: Shxdow
 Project: System Optimization & Gaming Performance
+Rename: Switched official title to Shxdow Cleaner.
 ============================================================
 
-[🚀] THE "PRO" TRANSFORMATION (NEW in v1.0.0)
+[🚀] THE "PRO" TRANSFORMATION ( v3.4 )
 ------------------------------------------------------------
 • NATIVE BINARY ARCHITECTURE: 
   Migrated from unstable 7-Zip SFX wrappers to a 100% Native 
