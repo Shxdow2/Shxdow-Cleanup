@@ -1,6 +1,6 @@
 #Requires -RunAsAdministrator
 <#
-  SHXDOW CLEANUP v3.3.1
+  SHXDOW CLEANUP v3.4
   Build: 2026-04-04 | Author: Shxdow
   FULL PATCH: v1 (System/Registry) + v2 (Dev/Cleanmgr) + Gaming Extended
 #>
@@ -284,7 +284,7 @@ while ($true) {
  ╚════██║ ██╔══██║ ██╔██╗ ██║  ██║██║   ██║██║███╗██║   ██║     ██║     ██╔══╝  ██╔══██║██║╚██╗██║██║   ██║██╔═══╝ 
  ██████╔╝ ██║  ██║██╔╝ ██╗██████╔╝╚██████╔╝╚███╔███╔╝   ╚██████╗███████╗███████╗██║  ██║██║ ╚████║╚██████╔╝██║     
  ╚═════╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚══╝╚══╝     ╚═════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝     
-$RE$Y                                           by Shxdow  $RE$DC v3.3.1$RE"
+$RE$Y                                           by Shxdow  $RE$DC v3.4$RE"
 
     Write-Host "`n$DC╔══════════════════════════════════════════════════╗"
     Write-Host "$DC║        $C$($M.BannerTitle)$RE$DC                    ║"
@@ -342,7 +342,7 @@ $RE$Y                                           by Shxdow  $RE$DC v3.3.1$RE"
         Write-Host "`n  $C[?]$($M.ReportAsk)$RE" -NoNewline
         if ((Read-Host) -match "^[OoYy]$") {
             $reportPath = "$env:USERPROFILE\Desktop\Shxdow_Report.txt"
-            "SHXDOW CLEANUP v3.3.2`nDate: $(Get-Date)`nGain: $(Fmt $realGain)" | Out-File $reportPath
+            "SHXDOW CLEANUP v3.4`nDate: $(Get-Date)`nGain: $(Fmt $realGain)" | Out-File $reportPath
             Write-Host "  $G [✔] Done.$RE"
         }
     } # --- FERMETURE DU BLOC PROCESS ---
